@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmusj3dsq8oq3"]
+[gd_scene load_steps=11 format=3 uid="uid://bmusj3dsq8oq3"]
 
 [ext_resource type="Script" uid="uid://b6rx5fn2rjcno" path="res://scripts/duquesa.gd" id="1_djqcb"]
 [ext_resource type="SpriteFrames" uid="uid://wawy1ac2fhuk" path="res://assets/animations/duquesa.tres" id="2_k35f2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dbrj8j8ulp06u" path="res://scripts/air_state.gd" id="6_jtp3i"]
 [ext_resource type="Script" uid="uid://ufmp6r5ewp1j" path="res://scripts/bark_state.gd" id="7_3f0o1"]
 [ext_resource type="Script" uid="uid://dxe8l7iktb44d" path="res://scripts/bite_state.gd" id="8_csi4x"]
+[ext_resource type="AudioStream" uid="uid://cnfrgsehdisow" path="res://assets/duquesa/bark_dog1.mp3" id="8_mm05u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_asxrl"]
 size = Vector2(26, 18)
@@ -20,7 +21,7 @@ position = Vector2(0, -17)
 sprite_frames = ExtResource("2_k35f2")
 animation = &"bite"
 autoplay = "idle"
-frame_progress = 0.435253
+frame_progress = 0.123361
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 5)
@@ -46,7 +47,9 @@ script = ExtResource("6_jtp3i")
 
 [node name="Bark" type="Node" parent="StateMachine"]
 script = ExtResource("7_3f0o1")
-bark_duration = 0.5
+
+[node name="BarkSound" type="AudioStreamPlayer" parent="StateMachine/Bark"]
+stream = ExtResource("8_mm05u")
 
 [node name="Bite" type="Node" parent="StateMachine"]
 script = ExtResource("8_csi4x")

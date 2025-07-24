@@ -19,14 +19,14 @@ func enter():
 	character.velocity.x = 0
 	
 	# Toca a animação de ataque/mordida
-	character.get_node("AnimatedSprite2D").play("attack")
+	character.get_node("AnimatedSprite2D").play("bite")
 	
 	# Reinicia o timer e flag de dano
 	bite_timer = 0.0
 	has_dealt_damage = false
 	
-	# Toca som de ataque se houver
-	# character.get_node("AttackSound").play()
+	# Som de ataque removido - apenas bark tem som
+	# get_node("AttackSound").play()
 
 # Roda a cada frame de física enquanto estivermos atacando
 func process_physics(delta: float) -> State:
@@ -68,7 +68,7 @@ func process_physics(delta: float) -> State:
 		# Reinicia o ataque para fazer combo
 		bite_timer = 0.0
 		has_dealt_damage = false
-		character.get_node("AnimatedSprite2D").play("attack")
+		character.get_node("AnimatedSprite2D").play("bite")
 	
 	# Permite fazer bark após bite se habilitado
 	if bark_combo_enabled and bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("bark"):

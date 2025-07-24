@@ -3,7 +3,7 @@ extends "res://scripts/state.gd"
 
 ## Configurações do Estado Bark (editáveis no Inspector)
 @export_group("Bark Settings")
-@export var bark_duration: float = 1.0  ## Duração do latido em segundos
+@export var bark_duration: float = 0.8  ## Duração do latido em segundos
 @export var jump_cancel_threshold: float = 0.8  ## Em que % da duração permite cancelar com pulo (0.8 = 80%)
 @export var bite_interrupt_enabled: bool = true  ## Se permite interromper bark com bite
 
@@ -21,7 +21,8 @@ func enter():
 	bark_timer = 0.0
 	
 	# Toca o som de latido se houver
-	# character.get_node("BarkSound").play()
+	if has_node("BarkSound"):
+		get_node("BarkSound").play()
 
 # Roda a cada frame de física enquanto estivermos latindo
 func process_physics(delta: float) -> State:
@@ -66,6 +67,7 @@ func process_physics(delta: float) -> State:
 # Chamado quando saímos do estado Bark
 func exit():
 	# Para o som se estiver tocando
-	# if character.get_node("BarkSound").is_playing():
-	#     character.get_node("BarkSound").stop()
-	pass
+	if has_node("BarkSound"):
+		var bark_sound = get_node("BarkSound")
+		if bark_sound.is_playing():
+			bark_sound.stop()
