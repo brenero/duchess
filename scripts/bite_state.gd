@@ -74,6 +74,10 @@ func process_physics(delta: float) -> State:
 	if bark_combo_enabled and bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("bark"):
 		return state_machine.get_node("Bark")
 	
+	# Permite fazer sniff após bite
+	if bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("sniff"):
+		return state_machine.get_node("Sniff")
+	
 	# Permite cancelar com pulo no final do ataque
 	if bite_timer >= bite_duration * cancel_threshold and Input.is_action_just_pressed("jump"):
 		return state_machine.get_node("Air")

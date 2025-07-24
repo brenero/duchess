@@ -44,10 +44,6 @@ func process_physics(delta: float) -> State:
 	# -----------------------
 	# Permite ataques no ar se habilitado
 	if aerial_attacks_enabled:
-		# Permite bark no ar (ataque aéreo)
-		if Input.is_action_just_pressed("bark"):
-			return state_machine.get_node("Bark")
-		
 		# Permite bite no ar (ataque aéreo)
 		if Input.is_action_just_pressed("bite"):
 			return state_machine.get_node("Bite")

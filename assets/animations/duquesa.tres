@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=124 format=3 uid="uid://wawy1ac2fhuk"]
+[gd_resource type="SpriteFrames" load_steps=114 format=3 uid="uid://wawy1ac2fhuk"]
 
 [ext_resource type="Texture2D" uid="uid://dclv6shorshbq" path="res://assets/duquesa/RottweilerAttack.png" id="1_yjgpn"]
 [ext_resource type="Texture2D" uid="uid://dnlpp78ol6n7a" path="res://assets/duquesa/RottweilerBark.png" id="2_cgni4"]
@@ -339,18 +339,6 @@ region = Rect2(384, 0, 64, 64)
 atlas = ExtResource("9_4okan")
 region = Rect2(448, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_r75fc"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(1920, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d1kv1"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(1856, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vdpbk"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(1792, 0, 64, 64)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_k36ck"]
 atlas = ExtResource("10_nbdcq")
 region = Rect2(1728, 0, 64, 64)
@@ -434,34 +422,6 @@ region = Rect2(512, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_i6ujb"]
 atlas = ExtResource("10_nbdcq")
 region = Rect2(448, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u47lo"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(384, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jnwig"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(320, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uxcmx"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(256, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bi6er"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(192, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_clrj6"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(128, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_da1o6"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j66pe"]
-atlas = ExtResource("10_nbdcq")
-region = Rect2(0, 0, 64, 64)
 
 [resource]
 animations = [{
@@ -758,15 +718,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_r75fc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d1kv1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vdpbk")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_k36ck")
 }, {
 "duration": 1.0,
@@ -828,27 +779,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i6ujb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u47lo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jnwig")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uxcmx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bi6er")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_clrj6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_da1o6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_j66pe")
 }],
 "loop": true,
 "name": &"sniff",

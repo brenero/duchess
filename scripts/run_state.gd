@@ -50,6 +50,10 @@ func process_physics(delta: float) -> State:
 	if Input.is_action_just_pressed("jump"):
 		return state_machine.get_node("Air")
 	
+	# Se o jogador apertar sniff, vamos para o estado 'Sniff'.
+	if Input.is_action_just_pressed("sniff"):
+		return state_machine.get_node("Sniff")
+	
 	# Permite ataques durante corrida se habilitado
 	if attacks_while_running:
 		# Se o jogador apertar bark, vamos para o estado 'Bark'.

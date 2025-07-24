@@ -33,6 +33,7 @@ func process_physics(delta: float) -> State:
 	# Qualquer input interrompe as animações idle e volta para o estado normal
 	var has_input = (Input.get_axis("move_left", "move_right") != 0 or 
 					 Input.is_action_just_pressed("jump") or
+					 Input.is_action_just_pressed("sniff") or
 					 (attacks_from_idle and (Input.is_action_just_pressed("bark") or Input.is_action_just_pressed("bite"))))
 	
 	if has_input:
@@ -57,6 +58,10 @@ func process_physics(delta: float) -> State:
 		# Verifica se o jogador pulou para transicionar para Air.
 		if Input.is_action_just_pressed("jump"):
 			return state_machine.get_node("Air")
+		
+		# Verifica se o jogador apertou sniff para transicionar para Sniff.
+		if Input.is_action_just_pressed("sniff"):
+			return state_machine.get_node("Sniff")
 		
 		# Verifica ataques se habilitado
 		if attacks_from_idle:
