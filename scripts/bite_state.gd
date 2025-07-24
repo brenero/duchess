@@ -12,14 +12,15 @@ extends "res://scripts/state.gd"
 
 var bite_timer: float = 0.0
 var has_dealt_damage: bool = false  # Para garantir que o dano seja dado apenas uma vez
+var is_aerial_bite: bool = false  # Para rastrear se é um ataque aéreo
 
 # Chamado uma vez quando entramos no estado Bite
 func enter():
-	# Para o movimento horizontal
-	character.velocity.x = 0
+	# Detecta se é um ataque aéreo
+	is_aerial_bite = not character.is_on_floor()
 	
-	# Toca a animação de ataque/mordida
-	character.get_node("AnimatedSprite2D").play("bite")
+	# Sempre usa run_bite (tanto no chão quanto no ar)
+	character.get_node("AnimatedSprite2D").play("run_bite")
 	
 	# Reinicia o timer e flag de dano
 	bite_timer = 0.0
@@ -35,11 +36,21 @@ func process_physics(delta: float) -> State:
 	# Aplica gravidade se não estiver no chão
 	if not character.is_on_floor():
 		character.velocity.y += character.gravity * delta
-		# Se sairmos do chão durante o ataque, vamos para Air
-		return state_machine.get_node("Air")
+		# Se começamos no chão mas saímos durante o ataque, vamos para Air
+		if not is_aerial_bite:
+			return state_machine.get_node("Air")
 	
-	# Mantém parado horizontalmente durante o ataque
-	character.velocity.x = 0
+	# Controla movimento horizontal
+	if not is_aerial_bite:
+		# Bite terrestre: aplica input de movimento normalmente
+		var direction = Input.get_axis("move_left", "move_right")
+		character.velocity.x = direction * character.speed
+		
+		# Atualiza direção do sprite
+		if direction > 0:
+			character.get_node("AnimatedSprite2D").flip_h = false
+		elif direction < 0:
+			character.get_node("AnimatedSprite2D").flip_h = true
 	
 	# 2. GERENCIAR DURAÇÃO DO ATAQUE
 	# ------------------------------
@@ -53,33 +64,44 @@ func process_physics(delta: float) -> State:
 	
 	# Se o ataque terminou, decidir qual estado ir
 	if bite_timer >= bite_duration:
-		# Verifica se há input de movimento para ir para Run
-		var direction = Input.get_axis("move_left", "move_right")
-		if direction != 0:
-			return state_machine.get_node("Run")
-		# Senão volta para Idle
+		# Se foi um ataque aéreo, verifica se ainda estamos no ar
+		if is_aerial_bite:
+			if not character.is_on_floor():
+				return state_machine.get_node("Air")
+			else:
+				# Tocamos o chão durante o ataque aéreo
+				var direction = Input.get_axis("move_left", "move_right")
+				if direction != 0:
+					return state_machine.get_node("Run")
+				else:
+					return state_machine.get_node("Idle")
 		else:
-			return state_machine.get_node("Idle")
+			# Ataque no chão - comportamento normal
+			var direction = Input.get_axis("move_left", "move_right")
+			if direction != 0:
+				return state_machine.get_node("Run")
+			else:
+				return state_machine.get_node("Idle")
 	
 	# 3. PERMITIR COMBO DE ATAQUES
 	# ----------------------------
-	# Permite fazer outro bite (combo) se habilitado
-	if bite_combo_enabled and bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("bite"):
+	# Permite fazer outro bite (combo) se habilitado (apenas ataques no chão)
+	if not is_aerial_bite and bite_combo_enabled and bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("bite"):
 		# Reinicia o ataque para fazer combo
 		bite_timer = 0.0
 		has_dealt_damage = false
-		character.get_node("AnimatedSprite2D").play("bite")
+		character.get_node("AnimatedSprite2D").play("run_bite")
 	
-	# Permite fazer bark após bite se habilitado
-	if bark_combo_enabled and bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("bark"):
+	# Permite fazer bark após bite se habilitado (apenas ataques no chão)
+	if not is_aerial_bite and bark_combo_enabled and bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("bark"):
 		return state_machine.get_node("Bark")
 	
-	# Permite fazer sniff após bite
-	if bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("sniff"):
+	# Permite fazer sniff após bite (apenas ataques no chão)
+	if not is_aerial_bite and bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("sniff"):
 		return state_machine.get_node("Sniff")
 	
-	# Permite cancelar com pulo no final do ataque
-	if bite_timer >= bite_duration * cancel_threshold and Input.is_action_just_pressed("jump"):
+	# Permite cancelar com pulo no final do ataque (apenas ataques no chão)
+	if not is_aerial_bite and bite_timer >= bite_duration * cancel_threshold and Input.is_action_just_pressed("jump"):
 		return state_machine.get_node("Air")
 	
 	# Continua no estado Bite

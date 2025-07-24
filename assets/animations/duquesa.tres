@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=114 format=3 uid="uid://wawy1ac2fhuk"]
+[gd_resource type="SpriteFrames" load_steps=120 format=3 uid="uid://wawy1ac2fhuk"]
 
 [ext_resource type="Texture2D" uid="uid://dclv6shorshbq" path="res://assets/duquesa/RottweilerAttack.png" id="1_yjgpn"]
 [ext_resource type="Texture2D" uid="uid://dnlpp78ol6n7a" path="res://assets/duquesa/RottweilerBark.png" id="2_cgni4"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://b5unia60i4os8" path="res://assets/duquesa/LieDownn.png" id="6_kbd63"]
 [ext_resource type="Texture2D" uid="uid://o5yvuyn4ph2c" path="res://assets/duquesa/RittieRun.png" id="7_wmjd0"]
 [ext_resource type="Texture2D" uid="uid://bvmp2u3emin61" path="res://assets/duquesa/Sittiing.png" id="8_2xblu"]
+[ext_resource type="Texture2D" uid="uid://fskcsfmtcl32" path="res://assets/duquesa/RunAttack.png" id="8_mrb8c"]
 [ext_resource type="Texture2D" uid="uid://dxxay3b5gdm0k" path="res://assets/duquesa/SleepDogg.png" id="9_4okan"]
 [ext_resource type="Texture2D" uid="uid://6ov27qcxeawp" path="res://assets/duquesa/RottweilerSniff.png" id="10_nbdcq"]
 
@@ -273,6 +274,26 @@ region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aao47"]
 atlas = ExtResource("7_wmjd0")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ef1nt"]
+atlas = ExtResource("8_mrb8c")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_80s6f"]
+atlas = ExtResource("8_mrb8c")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1a6yo"]
+atlas = ExtResource("8_mrb8c")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lltga"]
+atlas = ExtResource("8_mrb8c")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7r6yy"]
+atlas = ExtResource("8_mrb8c")
 region = Rect2(256, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vg4rk"]
@@ -656,6 +677,26 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ef1nt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_80s6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1a6yo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lltga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7r6yy")
+}],
+"loop": true,
+"name": &"run_bite",
 "speed": 10.0
 }, {
 "frames": [{
