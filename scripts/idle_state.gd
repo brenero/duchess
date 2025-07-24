@@ -34,6 +34,7 @@ func process_physics(delta: float) -> State:
 	var has_input = (Input.get_axis("move_left", "move_right") != 0 or 
 					 Input.is_action_just_pressed("jump") or
 					 Input.is_action_just_pressed("sniff") or
+					 Input.is_action_just_pressed("dig") or
 					 (attacks_from_idle and (Input.is_action_just_pressed("bark") or Input.is_action_just_pressed("bite"))))
 	
 	if has_input:
@@ -62,6 +63,10 @@ func process_physics(delta: float) -> State:
 		# Verifica se o jogador apertou sniff para transicionar para Sniff.
 		if Input.is_action_just_pressed("sniff"):
 			return state_machine.get_node("Sniff")
+		
+		# Verifica se o jogador apertou dig para transicionar para Dig.
+		if Input.is_action_just_pressed("dig"):
+			return state_machine.get_node("Dig")
 		
 		# Verifica ataques se habilitado
 		if attacks_from_idle:

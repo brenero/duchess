@@ -16,3 +16,9 @@ func _physics_process(delta):
 			state_machine.transition_to(new_state)
 	
 	move_and_slide()
+
+func _ready():
+	# Garante que as partículas comecem desabilitadas
+	if has_node("DustParticles"):
+		var particles = get_node("DustParticles")
+		particles.emitting = false

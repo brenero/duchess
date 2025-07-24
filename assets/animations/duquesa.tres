@@ -1,9 +1,10 @@
-[gd_resource type="SpriteFrames" load_steps=120 format=3 uid="uid://wawy1ac2fhuk"]
+[gd_resource type="SpriteFrames" load_steps=125 format=3 uid="uid://wawy1ac2fhuk"]
 
 [ext_resource type="Texture2D" uid="uid://dclv6shorshbq" path="res://assets/duquesa/RottweilerAttack.png" id="1_yjgpn"]
 [ext_resource type="Texture2D" uid="uid://dnlpp78ol6n7a" path="res://assets/duquesa/RottweilerBark.png" id="2_cgni4"]
 [ext_resource type="Texture2D" uid="uid://c17rjw8vbh1ch" path="res://assets/duquesa/RottweilerDie.png" id="3_vhmme"]
 [ext_resource type="Texture2D" uid="uid://5r8grjdnkg0o" path="res://assets/duquesa/RottweilerHurt.png" id="4_13e44"]
+[ext_resource type="Texture2D" uid="uid://dav8661sa56ls" path="res://assets/duquesa/dig.png" id="4_ef1nt"]
 [ext_resource type="Texture2D" uid="uid://ddi2h74aygecy" path="res://assets/duquesa/RottweilerIdle.png" id="5_2vuhl"]
 [ext_resource type="Texture2D" uid="uid://b5unia60i4os8" path="res://assets/duquesa/LieDownn.png" id="6_kbd63"]
 [ext_resource type="Texture2D" uid="uid://o5yvuyn4ph2c" path="res://assets/duquesa/RittieRun.png" id="7_wmjd0"]
@@ -123,6 +124,22 @@ region = Rect2(832, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_jt4h0"]
 atlas = ExtResource("3_vhmme")
 region = Rect2(896, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u7qih"]
+atlas = ExtResource("4_ef1nt")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rfbtl"]
+atlas = ExtResource("4_ef1nt")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gighv"]
+atlas = ExtResource("4_ef1nt")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kwojt"]
+atlas = ExtResource("4_ef1nt")
+region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rp4nu"]
 atlas = ExtResource("4_13e44")
@@ -543,6 +560,23 @@ animations = [{
 }],
 "loop": true,
 "name": &"die",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u7qih")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rfbtl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gighv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kwojt")
+}],
+"loop": true,
+"name": &"dig",
 "speed": 10.0
 }, {
 "frames": [{

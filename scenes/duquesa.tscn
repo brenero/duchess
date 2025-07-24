@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bmusj3dsq8oq3"]
+[gd_scene load_steps=15 format=3 uid="uid://bmusj3dsq8oq3"]
 
 [ext_resource type="Script" uid="uid://b6rx5fn2rjcno" path="res://scripts/duquesa.gd" id="1_djqcb"]
 [ext_resource type="SpriteFrames" uid="uid://wawy1ac2fhuk" path="res://assets/animations/duquesa.tres" id="2_k35f2"]
@@ -10,9 +10,17 @@
 [ext_resource type="Script" uid="uid://dxe8l7iktb44d" path="res://scripts/bite_state.gd" id="8_csi4x"]
 [ext_resource type="AudioStream" uid="uid://cnfrgsehdisow" path="res://assets/duquesa/bark_dog1.mp3" id="8_mm05u"]
 [ext_resource type="Script" uid="uid://t0o5n4oin52y" path="res://scripts/sniff_state.gd" id="10_kyuot"]
+[ext_resource type="Script" uid="uid://ct1avposhcx6f" path="res://scripts/dig_state.gd" id="11_7p3s7"]
+[ext_resource type="Texture2D" uid="uid://b1wjk1dx32e5h" path="res://assets/duquesa/SmokeFX Lite SpriteSheet 1A-15.png" id="12_vaoro"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_asxrl"]
 size = Vector2(26, 18)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vaoro"]
+particles_animation = true
+particles_anim_h_frames = 9
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
 [node name="Duquesa" type="CharacterBody2D"]
 script = ExtResource("1_djqcb")
@@ -20,8 +28,9 @@ script = ExtResource("1_djqcb")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -17)
 sprite_frames = ExtResource("2_k35f2")
-animation = &"run_bite"
+animation = &"dig"
 autoplay = "idle"
+frame_progress = 0.423637
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 5)
@@ -31,6 +40,10 @@ shape = SubResource("RectangleShape2D_asxrl")
 offset = Vector2(0, -50)
 limit_bottom = 300
 limit_smoothed = true
+
+[node name="DustParticles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_vaoro")
+texture = ExtResource("12_vaoro")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_k35f2")
@@ -58,3 +71,8 @@ dash_duration = 0.4
 
 [node name="Sniff" type="Node" parent="StateMachine"]
 script = ExtResource("10_kyuot")
+
+[node name="Dig" type="Node" parent="StateMachine"]
+script = ExtResource("11_7p3s7")
+dig_duration = 2.0
+dig_loops = 3
