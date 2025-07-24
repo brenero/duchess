@@ -1,0 +1,90 @@
+[gd_scene load_steps=7 format=3 uid="uid://buxluuwvbkqqj"]
+
+[ext_resource type="Texture2D" uid="uid://bldpfrai278o0" path="res://assets/bg/1-sky.png" id="1_qs7dk"]
+[ext_resource type="Texture2D" uid="uid://ccb31rpwxyadg" path="res://assets/bg/2-clouds.png" id="2_2oy3k"]
+[ext_resource type="Texture2D" uid="uid://c370hwh22ouy5" path="res://assets/bg/3-hills.png" id="3_jy56r"]
+[ext_resource type="Texture2D" uid="uid://ce7swnfit2mbm" path="res://assets/bg/4-trees.png" id="4_11q5a"]
+[ext_resource type="Texture2D" uid="uid://dc1gv1g5njib2" path="res://assets/bg/5-bushes.png" id="5_cdfjv"]
+[ext_resource type="Texture2D" uid="uid://bv5t6wlnxib07" path="res://assets/bg/6-grass.png" id="6_cs2et"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+scale = Vector2(0.25, 0.25)
+transform = Transform2D(0.25, 0, 0, 0.25, 0, 0)
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+position = Vector2(956, 544)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxLayer"]
+custom_minimum_size = Vector2(19200, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_qs7dk")
+stretch_mode = 1
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="."]
+position = Vector2(956, 544)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxLayer2"]
+custom_minimum_size = Vector2(19200, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_2oy3k")
+stretch_mode = 1
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="."]
+position = Vector2(956, 544)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxLayer3"]
+custom_minimum_size = Vector2(19200, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_jy56r")
+stretch_mode = 1
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="."]
+position = Vector2(956, 544)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxLayer4"]
+custom_minimum_size = Vector2(19200, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_11q5a")
+stretch_mode = 1
+
+[node name="ParallaxLayer5" type="ParallaxLayer" parent="."]
+position = Vector2(956, 544)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxLayer5"]
+custom_minimum_size = Vector2(19200, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_cdfjv")
+stretch_mode = 1
+
+[node name="ParallaxLayer6" type="ParallaxLayer" parent="."]
+position = Vector2(956, 544)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxLayer6"]
+custom_minimum_size = Vector2(19200, 1080)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_cs2et")
+stretch_mode = 1

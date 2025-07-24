@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://bmusj3dsq8oq3"]
+
+[ext_resource type="Script" uid="uid://b6rx5fn2rjcno" path="res://scripts/duquesa.gd" id="1_djqcb"]
+[ext_resource type="SpriteFrames" uid="uid://wawy1ac2fhuk" path="res://assets/animations/duquesa.tres" id="2_k35f2"]
+[ext_resource type="Script" uid="uid://cw0ne17holxnm" path="res://scripts/state_machine.gd" id="3_k35f2"]
+[ext_resource type="Script" uid="uid://ew07xgen4f7i" path="res://scripts/idle_state.gd" id="4_asxrl"]
+[ext_resource type="Script" uid="uid://b4eyjw245lvss" path="res://scripts/run_state.gd" id="5_ule2h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_asxrl"]
+size = Vector2(26, 18)
+
+[node name="Duquesa" type="CharacterBody2D"]
+script = ExtResource("1_djqcb")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -17)
+sprite_frames = ExtResource("2_k35f2")
+animation = &"attack"
+autoplay = "idle"
+frame_progress = 0.702551
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 5)
+shape = SubResource("RectangleShape2D_asxrl")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(0, -50)
+limit_bottom = 300
+limit_smoothed = true
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_k35f2")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("4_asxrl")
+
+[node name="Run" type="Node" parent="StateMachine"]
+script = ExtResource("5_ule2h")
+
+[node name="Air" type="Node" parent="StateMachine"]
