@@ -10,9 +10,17 @@ extends "res://scripts/state.gd"
 @export var bark_combo_enabled: bool = true  ## Se permite fazer bark após bite
 @export var bite_combo_enabled: bool = true  ## Se permite fazer combo de bites
 
+@export_group("Dash Settings")
+@export var dash_enabled: bool = true  ## Se ativa o dash durante bite
+@export var dash_speed_multiplier: float = 1.8  ## Multiplicador de velocidade durante dash
+@export var dash_duration: float = 0.2  ## Duração do dash em segundos
+@export var dash_preserve_direction: bool = true  ## Se preserva direção quando não há input
+
 var bite_timer: float = 0.0
 var has_dealt_damage: bool = false  # Para garantir que o dano seja dado apenas uma vez
 var is_aerial_bite: bool = false  # Para rastrear se é um ataque aéreo
+var dash_direction: float = 0.0  # Direção do dash (1 = direita, -1 = esquerda)
+var is_dashing: bool = false  # Se está no período de dash
 
 # Chamado uma vez quando entramos no estado Bite
 func enter():
@@ -21,6 +29,22 @@ func enter():
 	
 	# Sempre usa run_bite (tanto no chão quanto no ar)
 	character.get_node("AnimatedSprite2D").play("run_bite")
+	
+	# Configura dash se habilitado
+	if dash_enabled:
+		is_dashing = true
+		# Determina direção do dash
+		var input_direction = Input.get_axis("move_left", "move_right")
+		if input_direction != 0:
+			dash_direction = input_direction
+		elif dash_preserve_direction:
+			# Preserva direção atual do sprite se não há input
+			dash_direction = 1.0 if not character.get_node("AnimatedSprite2D").flip_h else -1.0
+		else:
+			dash_direction = 0.0
+	else:
+		is_dashing = false
+		dash_direction = 0.0
 	
 	# Reinicia o timer e flag de dano
 	bite_timer = 0.0
@@ -42,15 +66,31 @@ func process_physics(delta: float) -> State:
 	
 	# Controla movimento horizontal
 	if not is_aerial_bite:
-		# Bite terrestre: aplica input de movimento normalmente
-		var direction = Input.get_axis("move_left", "move_right")
-		character.velocity.x = direction * character.speed
+		# Verifica se ainda está no período de dash
+		if is_dashing and bite_timer < dash_duration:
+			# Durante dash: aplica velocidade aumentada na direção do dash
+			var dash_speed = character.speed * dash_speed_multiplier
+			character.velocity.x = dash_direction * dash_speed
+		else:
+			# Após dash: movimento normal com input
+			is_dashing = false
+			var direction = Input.get_axis("move_left", "move_right")
+			character.velocity.x = direction * character.speed
 		
-		# Atualiza direção do sprite
-		if direction > 0:
+		# Atualiza direção do sprite baseada na velocidade atual
+		if character.velocity.x > 0:
 			character.get_node("AnimatedSprite2D").flip_h = false
-		elif direction < 0:
+		elif character.velocity.x < 0:
 			character.get_node("AnimatedSprite2D").flip_h = true
+	else:
+		# Bite aéreo: também aplica dash se habilitado
+		if is_dashing and bite_timer < dash_duration:
+			# Durante dash aéreo: aplica velocidade aumentada na direção do dash
+			var dash_speed = character.speed * dash_speed_multiplier
+			character.velocity.x = dash_direction * dash_speed
+		else:
+			# Após dash aéreo: mantém momentum atual (não aplica input no ar)
+			is_dashing = false
 	
 	# 2. GERENCIAR DURAÇÃO DO ATAQUE
 	# ------------------------------
@@ -91,6 +131,17 @@ func process_physics(delta: float) -> State:
 		bite_timer = 0.0
 		has_dealt_damage = false
 		character.get_node("AnimatedSprite2D").play("run_bite")
+		
+		# Reaplica dash no combo se habilitado
+		if dash_enabled:
+			is_dashing = true
+			var input_direction = Input.get_axis("move_left", "move_right")
+			if input_direction != 0:
+				dash_direction = input_direction
+			elif dash_preserve_direction:
+				dash_direction = 1.0 if not character.get_node("AnimatedSprite2D").flip_h else -1.0
+			else:
+				dash_direction = 0.0
 	
 	# Permite fazer bark após bite se habilitado (apenas ataques no chão)
 	if not is_aerial_bite and bark_combo_enabled and bite_timer >= bite_duration * combo_threshold and Input.is_action_just_pressed("bark"):

@@ -53,6 +53,8 @@ stream = ExtResource("8_mm05u")
 
 [node name="Bite" type="Node" parent="StateMachine"]
 script = ExtResource("8_csi4x")
+dash_speed_multiplier = 1.4
+dash_duration = 0.4
 
 [node name="Sniff" type="Node" parent="StateMachine"]
 script = ExtResource("10_kyuot")
