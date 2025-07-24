@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmusj3dsq8oq3"]
+[gd_scene load_steps=10 format=3 uid="uid://bmusj3dsq8oq3"]
 
 [ext_resource type="Script" uid="uid://b6rx5fn2rjcno" path="res://scripts/duquesa.gd" id="1_djqcb"]
 [ext_resource type="SpriteFrames" uid="uid://wawy1ac2fhuk" path="res://assets/animations/duquesa.tres" id="2_k35f2"]
 [ext_resource type="Script" uid="uid://cw0ne17holxnm" path="res://scripts/state_machine.gd" id="3_k35f2"]
 [ext_resource type="Script" uid="uid://ew07xgen4f7i" path="res://scripts/idle_state.gd" id="4_asxrl"]
 [ext_resource type="Script" uid="uid://b4eyjw245lvss" path="res://scripts/run_state.gd" id="5_ule2h"]
+[ext_resource type="Script" uid="uid://dbrj8j8ulp06u" path="res://scripts/air_state.gd" id="6_jtp3i"]
+[ext_resource type="Script" uid="uid://ufmp6r5ewp1j" path="res://scripts/bark_state.gd" id="7_3f0o1"]
+[ext_resource type="Script" uid="uid://dxe8l7iktb44d" path="res://scripts/bite_state.gd" id="8_csi4x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_asxrl"]
 size = Vector2(26, 18)
@@ -15,9 +18,9 @@ script = ExtResource("1_djqcb")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -17)
 sprite_frames = ExtResource("2_k35f2")
-animation = &"attack"
+animation = &"bite"
 autoplay = "idle"
-frame_progress = 0.702551
+frame_progress = 0.435253
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-2, 5)
@@ -39,3 +42,11 @@ script = ExtResource("4_asxrl")
 script = ExtResource("5_ule2h")
 
 [node name="Air" type="Node" parent="StateMachine"]
+script = ExtResource("6_jtp3i")
+
+[node name="Bark" type="Node" parent="StateMachine"]
+script = ExtResource("7_3f0o1")
+bark_duration = 0.5
+
+[node name="Bite" type="Node" parent="StateMachine"]
+script = ExtResource("8_csi4x")

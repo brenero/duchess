@@ -1,6 +1,11 @@
 # run_state.gd - Lógica para quando a Duquesa está correndo.
 extends "res://scripts/state.gd"
 
+## Configurações do Estado Run (editáveis no Inspector)
+@export_group("Run Settings")
+@export var attacks_while_running: bool = true  ## Se permite ataques enquanto corre
+@export var stop_on_zero_input: bool = true  ## Se para imediatamente quando não há input
+
 # Chamado uma vez, no momento exato em que entramos no estado de corrida.
 func enter():
 	# A primeira coisa a fazer é tocar a animação de corrida.
@@ -38,12 +43,22 @@ func process_physics(delta: float) -> State:
 		return state_machine.get_node("Air")
 		
 	# Se o jogador parar de se mover, devemos voltar para o estado 'Idle'.
-	if direction == 0:
+	if stop_on_zero_input and direction == 0:
 		return state_machine.get_node("Idle")
 		
 	# Se o jogador apertar o pulo, vamos para o estado 'Air'.
 	if Input.is_action_just_pressed("jump"):
 		return state_machine.get_node("Air")
+	
+	# Permite ataques durante corrida se habilitado
+	if attacks_while_running:
+		# Se o jogador apertar bark, vamos para o estado 'Bark'.
+		if Input.is_action_just_pressed("bark"):
+			return state_machine.get_node("Bark")
+		
+		# Se o jogador apertar bite, vamos para o estado 'Bite'.
+		if Input.is_action_just_pressed("bite"):
+			return state_machine.get_node("Bite")
 
 	# Se nenhuma das condições acima for atendida, continuamos no estado 'Run'.
 	return null
