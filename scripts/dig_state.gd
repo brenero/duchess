@@ -8,16 +8,18 @@ extends "res://scripts/state.gd"
 @export var movement_allowed: bool = false  ## Se permite movimento durante dig
 @export var cancel_threshold: float = 0.3  ## Em que % permite cancelar (0.3 = 30%)
 
-@export_group("Particle Settings")
-@export var particles_enabled: bool = true  ## Se ativa partículas de poeira
-@export var particles_per_loop: int = 3  ## Quantas rajadas de partículas por loop
-@export var particle_delay: float = 0.3  ## Delay mínimo entre rajadas de partículas
-@export var burst_duration: float = 0.1  ## Duração de cada rajada em segundos
 
 var dig_timer: float = 0.0
 var loops_completed: int = 0
-var particles_spawned: int = 0  # Contador de partículas já criadas
-var last_particle_time: float = 0.0  # Tempo da última partícula
+
+# Chamado quando o estado é inicializado
+func init(character_ref, state_machine_ref):
+	super.init(character_ref, state_machine_ref)
+	
+	# Esconde a animação de smoke no início
+	if has_node("AnimatedSprite2D"):
+		var smoke_sprite = get_node("AnimatedSprite2D")
+		smoke_sprite.visible = false
 
 # Chamado uma vez quando entramos no estado Dig
 func enter():
@@ -27,16 +29,12 @@ func enter():
 	# Toca a animação de cavar
 	character.get_node("AnimatedSprite2D").play("dig")
 	
-	# Para as partículas inicialmente
-	if character.has_node("DustParticles"):
-		var particles = character.get_node("DustParticles")
-		particles.emitting = false
+	# Inicia a animação de smoke
+	start_smoke_animation()
 	
 	# Reinicia o timer e contadores
 	dig_timer = 0.0
 	loops_completed = 0
-	particles_spawned = 0
-	last_particle_time = 0.0
 
 # Roda a cada frame de física enquanto estivermos cavando
 func process_physics(delta: float) -> State:
@@ -57,16 +55,18 @@ func process_physics(delta: float) -> State:
 		# Atualiza direção do sprite
 		if direction > 0:
 			character.get_node("AnimatedSprite2D").flip_h = false
+			update_smoke_offset()  # Atualiza offset do smoke quando muda direção
 		elif direction < 0:
 			character.get_node("AnimatedSprite2D").flip_h = true
+			update_smoke_offset()  # Atualiza offset do smoke quando muda direção
 	else:
 		# Mantém parado durante dig
 		character.velocity.x = 0
 	
-	# 2. GERENCIAR PARTÍCULAS DE POEIRA
-	# ---------------------------------
-	if particles_enabled:
-		manage_particles(delta)
+	# 2. ATUALIZAR POSIÇÃO DO SMOKE
+	# ------------------------------
+	# Atualiza a posição do smoke a cada frame para seguir o cachorro
+	update_smoke_offset()
 	
 	# 3. GERENCIAR DURAÇÃO DO CAVAR
 	# -----------------------------
@@ -112,44 +112,112 @@ func process_physics(delta: float) -> State:
 	# Continua no estado Dig
 	return null
 
-# Gerencia a criação de partículas durante o dig
-func manage_particles(delta: float):
-	# Calcula quantas partículas devemos ter criado até agora
-	var total_particles_expected = dig_loops * particles_per_loop
-	var particles_per_second = total_particles_expected / dig_duration
-	var expected_particles = int(dig_timer * particles_per_second)
+# Inicia a animação de smoke com múltiplas rajadas
+func start_smoke_animation():
+	# Esconde o smoke principal (não vamos usar mais)
+	if has_node("AnimatedSprite2D"):
+		var smoke_sprite = get_node("AnimatedSprite2D")
+		smoke_sprite.visible = false
+		
+	# Cria apenas rajadas atrás da pata
+	create_additional_smoke_bursts()
+
+# Atualiza a posição do smoke baseado na direção do sprite do cachorro
+func update_smoke_offset():
+	# Apenas atualiza posições das rajadas (não há mais smoke principal)
+	update_additional_smoke_positions()
+
+# Cria rajadas de smoke adicionais atrás da pata
+func create_additional_smoke_bursts():
+	# Remove rajadas anteriores se existirem
+	clean_additional_smoke_bursts()
 	
-	# Se devemos criar uma nova partícula e passou tempo suficiente desde a última
-	if expected_particles > particles_spawned and dig_timer - last_particle_time >= particle_delay:
-		spawn_dust_particles()
-		particles_spawned += 1
-		last_particle_time = dig_timer
-
-# Cria partículas de poeira em rajadas controladas
-func spawn_dust_particles():
-	if character.has_node("DustParticles"):
-		var particles = character.get_node("DustParticles")
+	# Cria três rajadas atrás da pata
+	for i in range(3):
+		var additional_smoke = AnimatedSprite2D.new()
+		additional_smoke.name = "AdditionalSmoke" + str(i)
 		
-		# Para GPUParticles2D - ativa emissão por um tempo curto
-		if particles.has_method("restart"):
-			particles.amount = 20  # Quantidade de partículas por rajada
-			particles.emitting = true
-			# Cria um timer para parar a emissão após burst_duration
-			get_tree().create_timer(burst_duration).timeout.connect(_stop_particles)
+		# Copia as configurações do smoke principal
+		if has_node("AnimatedSprite2D"):
+			var main_smoke = get_node("AnimatedSprite2D")
+			additional_smoke.sprite_frames = main_smoke.sprite_frames
+			additional_smoke.animation = "smoke"
+			additional_smoke.self_modulate = main_smoke.self_modulate
+			additional_smoke.texture_filter = main_smoke.texture_filter
+			
+		# Adiciona ao nó do estado
+		add_child(additional_smoke)
+		additional_smoke.play("smoke")
 		
-		# Debug: print para verificar se está funcionando
-		print("Dust particles burst at dig time: ", dig_timer)
+		# Adiciona delay progressivo para criar efeito sequencial
+		var delay = (i + 1) * 0.1  # 0.1s, 0.2s e 0.3s de delay
+		additional_smoke.frame_progress = delay
+		
+		# Escala gradativa: primeira normal, segunda e terceira maiores
+		var scale_factor = 1.0 + (i * 0.3)  # 1.0, 1.3, 1.6
+		additional_smoke.scale = Vector2(scale_factor, scale_factor)
+		
+		# Remove offset - vamos usar posicionamento manual
+		additional_smoke.offset = Vector2(0, 0)
+		
+		# Define z_index para ficar na frente do personagem
+		additional_smoke.z_index = 2
 
-# Para a emissão de partículas após uma rajada
-func _stop_particles():
-	if character.has_node("DustParticles"):
-		var particles = character.get_node("DustParticles")
-		particles.emitting = false
+# Atualiza posições das rajadas adicionais
+func update_additional_smoke_positions():
+	var main_sprite = character.get_node("AnimatedSprite2D")
+	var main_sprite_global_pos = main_sprite.global_position
+	
+	# Configurações de posição
+	var paw_offset_y = 18
+	var back_spacing = 15  # Espaçamento maior entre as rajadas atrás
+	
+	# Posição Y fixa para todas as rajadas (alinhadas no chão)
+	# Agora sem offset, volta ao cálculo normal
+	var fixed_ground_y = main_sprite_global_pos.y + paw_offset_y
+	
+	for i in range(3):
+		var smoke_node = get_node_or_null("AdditionalSmoke" + str(i))
+		if smoke_node:
+			# Calcula posição atrás da pata baseado na direção
+			var back_offset_x
+			if main_sprite.flip_h:
+				# Olhando esquerda - rajadas vão para a direita (atrás)
+				# Primeira rajada mais próxima da pata dianteira (8px para frente = -8px)
+				back_offset_x = 0 + (i * back_spacing)  # +0, +15, +30
+				# Sprites de trás flipam para simular terra sendo jogada para trás
+				smoke_node.flip_h = true
+				print("Back smoke ", i, " flip: true (looking left)")
+			else:
+				# Olhando direita - rajadas vão para a esquerda (atrás)  
+				# Primeira rajada mais próxima da pata dianteira (8px para frente = +8px)
+				back_offset_x = 0 - (i * back_spacing)  # -0, -15, -30
+				# Sprites de trás não flipam quando olhando direita
+				smoke_node.flip_h = false
+				print("Back smoke ", i, " flip: false (looking right)")
+			
+			# Para compensar a escala e manter base alinhada, ajusta Y manualmente
+			var scale_factor = 1.0 + (i * 0.4)  # 1.0, 1.4, 1.8
+			var sprite_height = 64  # Altura assumida do sprite
+			var scale_y_compensation = (scale_factor - 1.0) * (sprite_height / 2)  # Metade da altura extra
+			
+			# Todas as rajadas na mesma altura Y (base), apenas X varia
+			smoke_node.global_position = Vector2(main_sprite_global_pos.x + back_offset_x, fixed_ground_y - scale_y_compensation)
+
+# Remove rajadas adicionais
+func clean_additional_smoke_bursts():
+	for i in range(3):
+		var smoke_node = get_node_or_null("AdditionalSmoke" + str(i))
+		if smoke_node:
+			smoke_node.queue_free()
 
 # Chamado quando saímos do estado Dig
 func exit():
-	# Para as partículas se estiverem rodando
-	if character.has_node("DustParticles"):
-		var particles = character.get_node("DustParticles")
-		if particles.has_method("emitting"):
-			particles.emitting = false
+	# Para a animação de smoke e esconde
+	if has_node("AnimatedSprite2D"):
+		var smoke_sprite = get_node("AnimatedSprite2D")
+		smoke_sprite.stop()
+		smoke_sprite.visible = false
+	
+	# Remove rajadas adicionais
+	clean_additional_smoke_bursts()

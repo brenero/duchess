@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bmusj3dsq8oq3"]
+[gd_scene load_steps=24 format=3 uid="uid://bmusj3dsq8oq3"]
 
 [ext_resource type="Script" uid="uid://b6rx5fn2rjcno" path="res://scripts/duquesa.gd" id="1_djqcb"]
 [ext_resource type="SpriteFrames" uid="uid://wawy1ac2fhuk" path="res://assets/animations/duquesa.tres" id="2_k35f2"]
@@ -16,11 +16,76 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_asxrl"]
 size = Vector2(26, 18)
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_vaoro"]
-particles_animation = true
-particles_anim_h_frames = 9
-particles_anim_v_frames = 1
-particles_anim_loop = false
+[sub_resource type="AtlasTexture" id="AtlasTexture_vaoro"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ds3gi"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jlgxu"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkkq5"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h8pcn"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xfcvc"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fxtsa"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xw1rk"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ddaf"]
+atlas = ExtResource("12_vaoro")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3wegb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vaoro")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ds3gi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jlgxu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qkkq5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h8pcn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xfcvc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fxtsa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xw1rk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ddaf")
+}],
+"loop": true,
+"name": &"smoke",
+"speed": 10.0
+}]
 
 [node name="Duquesa" type="CharacterBody2D"]
 script = ExtResource("1_djqcb")
@@ -40,10 +105,6 @@ shape = SubResource("RectangleShape2D_asxrl")
 offset = Vector2(0, -50)
 limit_bottom = 300
 limit_smoothed = true
-
-[node name="DustParticles" type="GPUParticles2D" parent="."]
-material = SubResource("CanvasItemMaterial_vaoro")
-texture = ExtResource("12_vaoro")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_k35f2")
@@ -76,3 +137,13 @@ script = ExtResource("10_kyuot")
 script = ExtResource("11_7p3s7")
 dig_duration = 2.0
 dig_loops = 3
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StateMachine/Dig"]
+visible = false
+self_modulate = Color(0.835294, 0.552941, 0.545098, 1)
+z_index = 2
+texture_filter = 2
+sprite_frames = SubResource("SpriteFrames_3wegb")
+animation = &"smoke"
+frame_progress = 0.437039
+offset = Vector2(-10, -1)
