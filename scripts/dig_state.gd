@@ -8,9 +8,14 @@ extends "res://scripts/state.gd"
 @export var movement_allowed: bool = false  ## Se permite movimento durante dig
 @export var cancel_threshold: float = 0.3  ## Em que % permite cancelar (0.3 = 30%)
 
+@export_group("Memory Collection Settings")
+@export var collection_distance: float = 48.0  ## Distância máxima para coletar memórias
 
 var dig_timer: float = 0.0
 var loops_completed: int = 0
+
+# Controller para descoberta de memórias
+var memory_discovery_controller: MemoryDiscoveryController
 
 # Chamado quando o estado é inicializado
 func init(character_ref, state_machine_ref):
@@ -25,6 +30,12 @@ func init(character_ref, state_machine_ref):
 func enter():
 	# Para o movimento horizontal
 	character.velocity.x = 0
+	
+	# Inicializa memory controller se necessário
+	_initialize_memory_controller()
+	
+	# Sempre executa a animação de dig primeiro
+	print("Cavando...")
 	
 	# Toca a animação de cavar
 	character.get_node("AnimatedSprite2D").play("dig")
@@ -79,6 +90,16 @@ func process_physics(delta: float) -> State:
 		
 		# Se completou todos os loops, termina
 		if loops_completed >= dig_loops:
+			# NOVA MECÂNICA: Tenta coletar memória APÓS completar animação
+			var collected_memory = false
+			if memory_discovery_controller:
+				collected_memory = memory_discovery_controller.attempt_dig_collection(character.global_position)
+			
+			if collected_memory:
+				print("Memória coletada! Dig concluído com sucesso.")
+			else:
+				print("Nenhuma memória encontrada neste local.")
+			
 			# Verifica se há input de movimento para ir para Run
 			var direction = Input.get_axis("move_left", "move_right")
 			if direction != 0:
@@ -221,3 +242,25 @@ func exit():
 	
 	# Remove rajadas adicionais
 	clean_additional_smoke_bursts()
+
+
+# === MÉTODOS PRIVADOS PARA MEMÓRIAS ===
+
+# Inicializa o memory discovery controller
+func _initialize_memory_controller():
+	if memory_discovery_controller:
+		return  # Já inicializado
+	
+	# Tenta encontrar controller existente
+	memory_discovery_controller = get_tree().get_first_node_in_group("memory_discovery_controller")
+	
+	if not memory_discovery_controller:
+		# Cria um novo controller se não existir
+		memory_discovery_controller = MemoryDiscoveryController.new()
+		memory_discovery_controller.name = "MemoryDiscoveryController"
+		
+		# Adiciona à árvore principal
+		get_tree().current_scene.add_child(memory_discovery_controller)
+		memory_discovery_controller.add_to_group("memory_discovery_controller")
+		
+		print("DigState: MemoryDiscoveryController criado automaticamente")

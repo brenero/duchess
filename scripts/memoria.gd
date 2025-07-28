@@ -1,3 +1,4 @@
+class_name Memoria
 extends Area2D
 
 # Configurações da memória
@@ -57,11 +58,11 @@ func discover_memory():
 	if glow_effect and glow_effect.has_animation("discover"):
 		glow_effect.play("discover")
 	
-	print("Memória descoberta: ", memory_title)
 
 func _on_duquesa_entered(body):
-	if body.name == "Duquesa" and is_discovered and not is_collected:
-		collect_memory()
+	# Memória não é mais coletada automaticamente
+	# Agora é necessário usar a ação DIG quando próximo
+	pass
 
 func collect_memory():
 	if is_collected:
@@ -107,3 +108,18 @@ func get_distance_to_duquesa() -> float:
 	if duquesa:
 		return global_position.distance_to(duquesa.global_position)
 	return INF
+
+# Verifica se a memória pode ser coletada pela Duquesa (para usar com DIG)
+func can_be_collected_by_player(player_position: Vector2, max_distance: float = 48.0) -> bool:
+	if not is_discovered or is_collected:
+		return false
+	
+	var distance = global_position.distance_to(player_position)
+	return distance <= max_distance
+
+# Método público para coletar a memória via DIG
+func attempt_collection_by_dig(player_position: Vector2) -> bool:
+	if can_be_collected_by_player(player_position):
+		collect_memory()
+		return true
+	return false

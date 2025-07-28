@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://buxluuwvbkqqj" path="res://scenes/parallax_background.tscn" id="3_sugp2"]
 [ext_resource type="AudioStream" uid="uid://cagbh1kgkhnpm" path="res://assets/sounds/desesperebolo-9006.mp3" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://bhal0f5r75q5t" path="res://scripts/memory_manager.gd" id="6_o6xl0"]
-[ext_resource type="PackedScene" path="res://scenes/memoria.tscn" id="6_tefeu"]
+[ext_resource type="PackedScene" uid="uid://bqx2hjy5p7wm0" path="res://scenes/memoria.tscn" id="6_tefeu"]
 
 [node name="Main" type="Node2D"]
 position = Vector2(257, 200)

@@ -1,8 +1,17 @@
+class_name HintBalloon
 extends Node2D
 
 # Referências aos sprites
 @onready var balloon_bg: Sprite2D = $BalloonBG
 @onready var hint_icon: Sprite2D = $HintIcon
+
+# Configurações do spritesheet (editáveis no Inspector)
+@export_group("Icon Spritesheet Settings")
+@export var icon_spritesheet: Texture2D = preload("res://assets/icons/sheet_white2x.png")
+@export var icon_size: Vector2i = Vector2i(32, 32)  ## Tamanho de cada ícone no spritesheet
+@export var arrow_right_position: Vector2i = Vector2i(4, 0)  ## Posição do ícone seta direita (em grid)
+@export var arrow_left_position: Vector2i = Vector2i(3, 0)   ## Posição do ícone seta esquerda (em grid)
+@export var exclamation_position: Vector2i = Vector2i(0, 0)  ## Posição do ícone exclamação (em grid)
 
 # Texturas das dicas
 var arrow_right_texture: Texture2D
@@ -21,57 +30,27 @@ func _ready():
 	# Esconde o balão inicialmente
 	visible = false
 	
-	# Carrega as texturas (por enquanto usando texturas básicas do Godot)
-	# No futuro você pode substituir por suas próprias imagens
-	load_default_textures()
+	# Carrega as texturas do spritesheet
+	load_spritesheet_textures()
 
-func load_default_textures():
-	# Por enquanto vamos criar texturas simples usando código
-	# Mais tarde você pode substituir por imagens reais
-	arrow_right_texture = create_simple_arrow_texture(true)
-	arrow_left_texture = create_simple_arrow_texture(false)
-	exclamation_texture = create_simple_exclamation_texture()
+func load_spritesheet_textures():
+	# Carrega ícones do spritesheet usando AtlasTexture
+	arrow_right_texture = create_atlas_texture(arrow_right_position)
+	arrow_left_texture = create_atlas_texture(arrow_left_position)
+	exclamation_texture = create_atlas_texture(exclamation_position)
 
-func create_simple_arrow_texture(pointing_right: bool) -> ImageTexture:
-	# Cria uma texture simples para as setas
-	var image = Image.create(32, 32, false, Image.FORMAT_RGBA8)
-	image.fill(Color.TRANSPARENT)
+func create_atlas_texture(grid_position: Vector2i) -> AtlasTexture:
+	# Cria uma AtlasTexture que referencia uma região específica do spritesheet
+	var atlas_texture = AtlasTexture.new()
+	atlas_texture.atlas = icon_spritesheet
 	
-	# Desenha uma seta simples (apenas uma representação básica)
-	for y in range(8, 24):
-		for x in range(8, 24):
-			if pointing_right:
-				if x >= 12 and x <= 20 and y >= 14 and y <= 18:
-					image.set_pixel(x, y, Color.WHITE)
-				elif x >= 18 and x <= 22 and abs(y - 16) <= (x - 18):
-					image.set_pixel(x, y, Color.WHITE)
-			else:
-				if x >= 12 and x <= 20 and y >= 14 and y <= 18:
-					image.set_pixel(x, y, Color.WHITE)
-				elif x >= 10 and x <= 14 and abs(y - 16) <= (14 - x):
-					image.set_pixel(x, y, Color.WHITE)
+	# Calcula a região baseada na posição no grid
+	var region_x = grid_position.x * icon_size.x
+	var region_y = grid_position.y * icon_size.y
 	
-	var texture = ImageTexture.create_from_image(image)
-	return texture
-
-func create_simple_exclamation_texture() -> ImageTexture:
-	# Cria uma texture simples para a exclamação
-	var image = Image.create(32, 32, false, Image.FORMAT_RGBA8)
-	image.fill(Color.TRANSPARENT)
+	atlas_texture.region = Rect2(region_x, region_y, icon_size.x, icon_size.y)
 	
-	# Desenha uma exclamação simples
-	for y in range(6, 22):
-		for x in range(14, 18):
-			if y < 18:
-				image.set_pixel(x, y, Color.YELLOW)
-	
-	# Ponto da exclamação
-	for y in range(22, 26):
-		for x in range(14, 18):
-			image.set_pixel(x, y, Color.YELLOW)
-	
-	var texture = ImageTexture.create_from_image(image)
-	return texture
+	return atlas_texture
 
 func show_hint(hint_type: HintType):
 	if not hint_icon:
