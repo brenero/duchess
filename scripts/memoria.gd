@@ -59,7 +59,7 @@ func discover_memory():
 		glow_effect.play("discover")
 	
 
-func _on_duquesa_entered(body):
+func _on_duquesa_entered(_body):
 	# Memória não é mais coletada automaticamente
 	# Agora é necessário usar a ação DIG quando próximo
 	pass
@@ -88,11 +88,11 @@ func show_memory_interface():
 	print("Descrição: ", memory_description)
 	print("========================")
 
-func set_visible_state(is_visible: bool):
+func set_visible_state(visible_state: bool):
 	if sprite:
-		sprite.visible = is_visible
+		sprite.visible = visible_state
 	if collision:
-		collision.set_deferred("disabled", not is_visible)
+		collision.set_deferred("disabled", not visible_state)
 
 # Função chamada pelo sniff para verificar se esta é a memória alvo
 func is_current_target() -> bool:

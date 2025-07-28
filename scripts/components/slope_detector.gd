@@ -24,9 +24,9 @@ var current_slope_angle: float = 0.0
 var target_slope_angle: float = 0.0
 var last_valid_angles: Array[float] = []
 
-func initialize(char: CharacterBody2D, spr: AnimatedSprite2D, left: RayCast2D, right: RayCast2D):
+func initialize(character_body: CharacterBody2D, spr: AnimatedSprite2D, left: RayCast2D, right: RayCast2D):
 	"""Inicializa o componente com as referências necessárias"""
-	character = char
+	character = character_body
 	sprite = spr
 	raycast_left = left
 	raycast_right = right

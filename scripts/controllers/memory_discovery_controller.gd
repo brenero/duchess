@@ -151,7 +151,7 @@ func _update_target_cache():
 func _invalidate_cache():
 	_cache_valid = false
 
-func _on_memory_collected(memory_index: int):
+func _on_memory_collected(_memory_index: int):
 	# Invalida cache quando uma memória é coletada
 	_invalidate_cache()
 	

@@ -14,7 +14,7 @@ func init(_character: CharacterBody2D, _state_machine: Node):
 func enter():
 	pass
 
-func process_physics(delta: float) -> State:
+func process_physics(_delta: float) -> State:
 	return null
 
 func exit():

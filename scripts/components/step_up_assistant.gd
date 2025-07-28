@@ -17,9 +17,9 @@ var step_raycast: RayCast2D
 @export var step_up_speed: float = 400.0
 @export var step_up_threshold: float = 1.0
 
-func initialize(char: CharacterBody2D, wall: RayCast2D, step: RayCast2D):
+func initialize(character_body: CharacterBody2D, wall: RayCast2D, step: RayCast2D):
 	"""Inicializa o componente com as referências necessárias"""
-	character = char
+	character = character_body
 	wall_raycast = wall
 	step_raycast = step
 	setup_raycasts()
