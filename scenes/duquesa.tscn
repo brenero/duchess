@@ -90,6 +90,10 @@ animations = [{
 }]
 
 [node name="Duquesa" type="CharacterBody2D" groups=["player"]]
+floor_stop_on_slope = false
+floor_constant_speed = true
+floor_max_angle = 1.0472
+floor_snap_length = 12.0
 script = ExtResource("1_djqcb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -180,3 +184,19 @@ texture = ExtResource("14_jlgxu")
 flip_h = true
 region_enabled = true
 region_rect = Rect2(16, 1022, 68, 56)
+
+[node name="SlopeRaycastLeft" type="RayCast2D" parent="."]
+enabled = false
+target_position = Vector2(-16, 32)
+
+[node name="SlopeRaycastRight" type="RayCast2D" parent="."]
+enabled = false
+target_position = Vector2(16, 32)
+
+[node name="WallRaycast" type="RayCast2D" parent="."]
+enabled = false
+target_position = Vector2(12, 0)
+
+[node name="StepRaycast" type="RayCast2D" parent="."]
+enabled = false
+target_position = Vector2(12, -20)
