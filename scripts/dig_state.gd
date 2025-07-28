@@ -208,14 +208,12 @@ func update_additional_smoke_positions():
 				back_offset_x = 0 + (i * back_spacing)  # +0, +15, +30
 				# Sprites de trás flipam para simular terra sendo jogada para trás
 				smoke_node.flip_h = true
-				print("Back smoke ", i, " flip: true (looking left)")
 			else:
 				# Olhando direita - rajadas vão para a esquerda (atrás)  
 				# Primeira rajada mais próxima da pata dianteira (8px para frente = +8px)
 				back_offset_x = 0 - (i * back_spacing)  # -0, -15, -30
 				# Sprites de trás não flipam quando olhando direita
 				smoke_node.flip_h = false
-				print("Back smoke ", i, " flip: false (looking right)")
 			
 			# Para compensar a escala e manter base alinhada, ajusta Y manualmente
 			var scale_factor = 1.0 + (i * 0.4)  # 1.0, 1.4, 1.8
