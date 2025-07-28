@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bmusj3dsq8oq3"]
+[gd_scene load_steps=25 format=3 uid="uid://bmusj3dsq8oq3"]
 
 [ext_resource type="Script" uid="uid://b6rx5fn2rjcno" path="res://scripts/duquesa.gd" id="1_djqcb"]
 [ext_resource type="SpriteFrames" uid="uid://wawy1ac2fhuk" path="res://assets/animations/duquesa.tres" id="2_k35f2"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://t0o5n4oin52y" path="res://scripts/sniff_state.gd" id="10_kyuot"]
 [ext_resource type="Script" uid="uid://ct1avposhcx6f" path="res://scripts/dig_state.gd" id="11_7p3s7"]
 [ext_resource type="Texture2D" uid="uid://b1wjk1dx32e5h" path="res://assets/duquesa/SmokeFX Lite SpriteSheet 1A-15.png" id="12_vaoro"]
+[ext_resource type="Script" uid="uid://sjj8wbam2yep" path="res://scripts/hint_balloon.gd" id="13_balloon"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_asxrl"]
 size = Vector2(26, 18)
@@ -87,7 +88,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="Duquesa" type="CharacterBody2D"]
+[node name="Duquesa" type="CharacterBody2D" groups=["player"]]
 script = ExtResource("1_djqcb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -147,3 +148,13 @@ sprite_frames = SubResource("SpriteFrames_3wegb")
 animation = &"smoke"
 frame_progress = 0.437039
 offset = Vector2(-10, -1)
+
+[node name="HintBalloon" type="Node2D" parent="."]
+position = Vector2(0, -45)
+script = ExtResource("13_balloon")
+
+[node name="BalloonBG" type="Sprite2D" parent="HintBalloon"]
+modulate = Color(1, 1, 1, 0.8)
+scale = Vector2(1.5, 1.5)
+
+[node name="HintIcon" type="Sprite2D" parent="HintBalloon"]

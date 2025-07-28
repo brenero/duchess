@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=4 uid="uid://bcofgd07p1yxf"]
+[gd_scene load_steps=8 format=4 uid="uid://bcofgd07p1yxf"]
 
 [ext_resource type="PackedScene" uid="uid://bmusj3dsq8oq3" path="res://scenes/duquesa.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://b3etv2dxvh4ct" path="res://scenes/tile_map_layer.tscn" id="2_0wfyh"]
 [ext_resource type="Texture2D" uid="uid://chukixyk10ssl" path="res://assets/items/DogHause.png" id="2_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://buxluuwvbkqqj" path="res://scenes/parallax_background.tscn" id="3_sugp2"]
 [ext_resource type="AudioStream" uid="uid://cagbh1kgkhnpm" path="res://assets/sounds/desesperebolo-9006.mp3" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://bhal0f5r75q5t" path="res://scripts/memory_manager.gd" id="6_o6xl0"]
+[ext_resource type="PackedScene" path="res://scenes/memoria.tscn" id="6_tefeu"]
 
 [node name="Main" type="Node2D"]
 position = Vector2(257, 200)
@@ -38,3 +40,18 @@ stream = ExtResource("5_tbgi4")
 volume_db = -6.0
 autoplay = true
 parameters/looping = true
+
+[node name="MemoryManager" type="Node" parent="." groups=["memory_manager"]]
+script = ExtResource("6_o6xl0")
+ordered_memories = Array[NodePath]([NodePath("Memoria"), NodePath("Memoria2"), NodePath("Memoria3")])
+
+[node name="Memoria" parent="MemoryManager" instance=ExtResource("6_tefeu")]
+position = Vector2(517, 213)
+memory_title = "Lembrança do Sítio"
+memory_description = "Duquesa brincando no Sítio Tigre"
+
+[node name="Memoria2" parent="MemoryManager" instance=ExtResource("6_tefeu")]
+position = Vector2(802, 210)
+
+[node name="Memoria3" parent="MemoryManager" instance=ExtResource("6_tefeu")]
+position = Vector2(-134, 211)

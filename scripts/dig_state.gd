@@ -199,7 +199,7 @@ func update_additional_smoke_positions():
 			# Para compensar a escala e manter base alinhada, ajusta Y manualmente
 			var scale_factor = 1.0 + (i * 0.4)  # 1.0, 1.4, 1.8
 			var sprite_height = 64  # Altura assumida do sprite
-			var scale_y_compensation = (scale_factor - 1.0) * (sprite_height / 2)  # Metade da altura extra
+			var scale_y_compensation = (scale_factor - 1.0) * (sprite_height / 2.0)  # Metade da altura extra
 			
 			# Todas as rajadas na mesma altura Y (base), apenas X varia
 			smoke_node.global_position = Vector2(main_sprite_global_pos.x + back_offset_x, fixed_ground_y - scale_y_compensation)
