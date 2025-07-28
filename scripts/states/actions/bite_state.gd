@@ -1,5 +1,5 @@
 # bite_state.gd - Estado para quando a Duquesa está mordendo/atacando
-extends "res://scripts/state.gd"
+extends "res://scripts/states/state.gd"
 
 ## Configurações do Estado Bite (editáveis no Inspector)
 @export_group("Bite Settings")

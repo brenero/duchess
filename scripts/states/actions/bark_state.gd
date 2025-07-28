@@ -1,5 +1,5 @@
 # bark_state.gd - Estado para quando a Duquesa está latindo
-extends "res://scripts/state.gd"
+extends "res://scripts/states/state.gd"
 
 ## Configurações do Estado Bark (editáveis no Inspector)
 @export_group("Bark Settings")

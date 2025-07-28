@@ -1,6 +1,6 @@
 # sniff_state.gd - Estado para quando a Duquesa está farejando
 # REFATORADO: Agora usa controllers para separação de responsabilidades
-extends "res://scripts/state.gd"
+extends "res://scripts/states/state.gd"
 
 ## Configurações do Estado Sniff (editáveis no Inspector)
 @export_group("Sniff Settings")

@@ -1,5 +1,5 @@
 # idlestate.gd (versão final)
-extends "res://scripts/state.gd"
+extends "res://scripts/states/state.gd"
 
 ## Configurações do Estado Idle (editáveis no Inspector)
 @export_group("Idle Settings")

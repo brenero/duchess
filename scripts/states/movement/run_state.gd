@@ -1,5 +1,5 @@
 # run_state.gd - Lógica para quando a Duquesa está correndo.
-extends "res://scripts/state.gd"
+extends "res://scripts/states/state.gd"
 
 ## Configurações do Estado Run (editáveis no Inspector)
 @export_group("Run Settings")

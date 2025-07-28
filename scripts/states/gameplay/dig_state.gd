@@ -1,5 +1,5 @@
 # dig_state.gd - Estado para quando a Duquesa está cavando
-extends "res://scripts/state.gd"
+extends "res://scripts/states/state.gd"
 
 ## Configurações do Estado Dig (editáveis no Inspector)
 @export_group("Dig Settings")

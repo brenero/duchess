@@ -1,5 +1,5 @@
 # air_state.gd - Estado para quando a Duquesa está no ar (pulando ou caindo)
-extends "res://scripts/state.gd"
+extends "res://scripts/states/state.gd"
 
 ## Configurações do Estado Air (editáveis no Inspector)
 @export_group("Air Control Settings")
