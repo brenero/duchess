@@ -87,7 +87,7 @@ func collect_memory(memory: Memoria):
 		memory_collected.emit(memory)
 
 ## Tenta coletar memória via DIG na posição do player
-func attempt_dig_collection(player_position: Vector2) -> bool:
+func attempt_dig_collection(player_position: Vector2) -> Memoria:
 	# Pega todas as memórias próximas
 	var memories = get_tree().get_nodes_in_group("memories")
 	
@@ -96,10 +96,10 @@ func attempt_dig_collection(player_position: Vector2) -> bool:
 			if memory.attempt_collection_by_dig(player_position):
 				memory_collected.emit(memory)
 				print("Memória coletada via DIG: ", memory.memory_title)
-				return true
+				return memory
 	
 	print("Nenhuma memória próxima para cavar")
-	return false
+	return null
 
 ## Verifica se há uma memória coletável na posição (para feedback visual)
 func has_collectible_memory_at_position(player_position: Vector2, max_distance: float = 48.0) -> Memoria:

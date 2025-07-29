@@ -91,12 +91,13 @@ func process_physics(delta: float) -> State:
 		# Se completou todos os loops, termina
 		if loops_completed >= dig_loops:
 			# NOVA MECÂNICA: Tenta coletar memória APÓS completar animação
-			var collected_memory = false
+			var collected_memory: Memoria = null
 			if memory_discovery_controller:
 				collected_memory = memory_discovery_controller.attempt_dig_collection(character.global_position)
 			
 			if collected_memory:
-				print("Memória coletada! Dig concluído com sucesso.")
+				print("Memória coletada! Exibindo interface...")
+				_display_collected_memory(collected_memory)
 			else:
 				print("Nenhuma memória encontrada neste local.")
 			
@@ -262,3 +263,21 @@ func _initialize_memory_controller():
 		memory_discovery_controller.add_to_group("memory_discovery_controller")
 		
 		print("DigState: MemoryDiscoveryController criado automaticamente")
+
+# Exibe a interface da memória coletada
+func _display_collected_memory(memory: Memoria):
+	if not memory:
+		return
+	
+	# Procura o controller de exibição de memórias
+	var memory_display_controller = get_tree().get_first_node_in_group("memory_display_controller")
+	
+	if not memory_display_controller:
+		# Cria o controller se não existir
+		memory_display_controller = preload("res://scripts/controllers/memory_display_controller.gd").new()
+		memory_display_controller.name = "MemoryDisplayController"
+		get_tree().current_scene.add_child(memory_display_controller)
+		print("DigState: MemoryDisplayController criado automaticamente")
+	
+	# Exibe a memória através do controller
+	memory_display_controller.display_memory(memory)
